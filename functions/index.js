@@ -36,17 +36,17 @@ app.get("/update", async (req, res) => {
     }
     const node = {
       date: (new Date()).toUTCString(),
-      temperature: req.query.temperature,
-      humidity: req.query.humidity,
-      co: req.query.co,
-      soil_moisture: req.query.soil_moisture,
-      dust: req.query.dust,
-      rain: req.query.rain,
+      temperature: parseFloat(req.query.temperature),
+      humidity: parseFloat(req.query.humidity),
+      co: parseFloat(req.query.co),
+      soil_moisture: parseFloat(req.query.soil_moisture),
+      dust: parseFloat(req.query.dust),
+      rain: parseFloat(req.query.rain),
     };
     const nodeRef = db.collection("stations").doc(stationID)
         .collection("nodes").doc(nodeID);
     const dataRef = nodeRef.collection("data").doc();
-    await nodeRef.set(node);
+    await nodeRef.update(node);
     await dataRef.set(node);
     res.status(200).send("Success");
   } catch (error) {
